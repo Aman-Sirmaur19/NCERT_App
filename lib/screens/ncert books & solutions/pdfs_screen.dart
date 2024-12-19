@@ -10,7 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../main.dart';
 import '../../widgets/chart_bar.dart';
-import 'pdf_viewer_screen.dart';
+import '../pdf_viewer_screen.dart';
 
 class PdfsScreen extends StatefulWidget {
   final String std;

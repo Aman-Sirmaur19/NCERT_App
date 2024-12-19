@@ -52,11 +52,6 @@ class _NcertBooksAndSolutionsGridState
     }
   }
 
-  void _selectCategory(BuildContext ctx, Map<String, dynamic> category) {
-    Navigator.of(ctx).push(
-        CupertinoPageRoute(builder: (ctx) => AllClasses(category: category)));
-  }
-
   @override
   void initState() {
     super.initState();
@@ -72,14 +67,7 @@ class _NcertBooksAndSolutionsGridState
             tooltip: 'Back',
             icon: const Icon(CupertinoIcons.chevron_back),
           ),
-          title: const Text(
-            'NCERT Books & Solutions',
-            style: TextStyle(
-              fontSize: 20,
-              letterSpacing: 1,
-              fontWeight: FontWeight.bold,
-            ),
-          )),
+          title: const Text('NCERT Books & Solutions')),
       // bottomNavigationBar: isBannerLoaded
       //     ? SizedBox(height: 50, child: AdWidget(ad: bannerAd))
       //     : const SizedBox(),
@@ -104,7 +92,8 @@ class _NcertBooksAndSolutionsGridState
             itemCount: categories.length,
             itemBuilder: (context, index) {
               return InkWell(
-                onTap: () => _selectCategory(context, categories[index]),
+                onTap: () => Navigator.of(context).push(CupertinoPageRoute(
+                    builder: (ctx) => AllClasses(category: categories[index]))),
                 borderRadius: BorderRadius.circular(30),
                 child: GlassContainer.boxGlassContainer(
                     child: Column(
@@ -118,8 +107,8 @@ class _NcertBooksAndSolutionsGridState
                       categories[index]['name'],
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],

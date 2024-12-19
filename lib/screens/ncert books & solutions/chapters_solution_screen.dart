@@ -2,26 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class PdfListScreen extends StatefulWidget {
-  final String std;
-  final String subject;
-  final String book;
-  final bool isSolutions;
+import '../../constants.dart';
+import '../pdf_viewer_screen.dart';
 
-  const PdfListScreen({
+class ChaptersSolutionScreen extends StatefulWidget {
+  final String std;
+  final String subjectName;
+
+  const ChaptersSolutionScreen({
     super.key,
     required this.std,
-    required this.subject,
-    required this.book,
-    required this.isSolutions,
+    required this.subjectName,
   });
 
   @override
-  State<PdfListScreen> createState() => _PdfListScreenState();
+  State<ChaptersSolutionScreen> createState() => _ChaptersSolutionScreenState();
 }
 
-class _PdfListScreenState extends State<PdfListScreen> {
-  Future<List<Map<String, String>>> getPdfFiles(String folderPath) async {
+class _ChaptersSolutionScreenState extends State<ChaptersSolutionScreen> {
+  Future<List<Map<String, String>>> _getPdfFiles(String folderPath) async {
     final storageRef = FirebaseStorage.instance.ref().child(folderPath);
     final listResult = await storageRef.listAll();
 
@@ -29,10 +28,8 @@ class _PdfListScreenState extends State<PdfListScreen> {
     final pdfFiles = await Future.wait(listResult.items
         .where((item) => item.name.toLowerCase().endsWith('.pdf'))
         .map((item) async {
-      final url =
-          await item.getDownloadURL();
-      final downloadUrl = await item
-          .getDownloadURL();
+      final url = await item.getDownloadURL();
+      final downloadUrl = await item.getDownloadURL();
       return {
         'name': item.name,
         'url': url,
@@ -52,20 +49,12 @@ class _PdfListScreenState extends State<PdfListScreen> {
           tooltip: 'Back',
           icon: const Icon(CupertinoIcons.chevron_back),
         ),
-        title: Text(
-          widget.isSolutions ? '${widget.book} Solutions' : widget.book,
-          style: const TextStyle(
-            fontSize: 20,
-            letterSpacing: 1,
-            fontWeight: FontWeight.bold,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
+        title: Text('${widget.subjectName} Solutions'),
       ),
       body: FutureBuilder<List<Map<String, String>>>(
-        future: getPdfFiles(widget.isSolutions
-            ? '${widget.std}/${widget.subject}/${widget.book}/Solutions'
-            : '${widget.std}/${widget.subject}/${widget.book}'),
+        future: _getPdfFiles(Constants.isExemplar
+            ? '${widget.std}/${widget.subjectName}/Exemplar'
+            : '${widget.std}/${widget.subjectName}'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -81,12 +70,25 @@ class _PdfListScreenState extends State<PdfListScreen> {
                 final pdf = pdfFiles[index];
                 return Card(
                   child: ListTile(
-                    onTap: () {},
+                    onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => PdfViewerScreen(
+                                  isDownloaded: false,
+                                  pdfName: pdf['name']!
+                                      .split('.')
+                                      .first
+                                      .split(') ')
+                                      .last,
+                                  pdfUrl: pdf['url']!,
+                                ))),
                     leading:
                         const Icon(Icons.picture_as_pdf, color: Colors.red),
                     title: Text(
                       pdf['name']!.split('.').first,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     trailing: IconButton(
                       onPressed: () {},
