@@ -4,15 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../widgets/glass_container.dart';
-import 'all_classes.dart';
 
-class HomeNcertBooksAndSolutionsGrid extends StatelessWidget {
-  const HomeNcertBooksAndSolutionsGrid({super.key});
+class HomeBooksAndSolutionsGrid extends StatelessWidget {
+  const HomeBooksAndSolutionsGrid({super.key});
 
   Future<List<Map<String, dynamic>>> fetchCategories() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('NCERT Books & Solutions')
+          .collection('Books & Solutions')
           .get();
       return querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
@@ -23,8 +22,8 @@ class HomeNcertBooksAndSolutionsGrid extends StatelessWidget {
   }
 
   void _selectCategory(BuildContext ctx, Map<String, dynamic> category) {
-    Navigator.of(ctx).push(
-        CupertinoPageRoute(builder: (ctx) => AllClasses(category: category)));
+    // Navigator.of(ctx).push(
+    //     CupertinoPageRoute(builder: (ctx) => AllClasses(category: category)));
   }
 
   @override
@@ -48,7 +47,7 @@ class HomeNcertBooksAndSolutionsGrid extends StatelessWidget {
               crossAxisCount: 3),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: categories.length < 3 ? categories.length : 3,
+          itemCount: categories.length < 6 ? categories.length : 6,
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () => _selectCategory(context, categories[index]),

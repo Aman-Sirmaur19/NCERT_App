@@ -5,14 +5,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../widgets/glass_container.dart';
 
-class OtherBooksGrid extends StatefulWidget {
-  const OtherBooksGrid({super.key});
+class BooksAndSolutionsGrid extends StatefulWidget {
+  const BooksAndSolutionsGrid({super.key});
 
   @override
-  State<OtherBooksGrid> createState() => _OtherBooksGridState();
+  State<BooksAndSolutionsGrid> createState() => _BooksAndSolutionsGridState();
 }
 
-class _OtherBooksGridState extends State<OtherBooksGrid> {
+class _BooksAndSolutionsGridState extends State<BooksAndSolutionsGrid> {
   // bool isBannerLoaded = false;
   // late BannerAd bannerAd;
 
@@ -38,8 +38,9 @@ class _OtherBooksGridState extends State<OtherBooksGrid> {
 
   Future<List<Map<String, dynamic>>> fetchAllBranches() async {
     try {
-      QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('Other Books').get();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Books & Solutions')
+          .get();
       return querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
@@ -68,14 +69,7 @@ class _OtherBooksGridState extends State<OtherBooksGrid> {
             tooltip: 'Back',
             icon: const Icon(CupertinoIcons.chevron_back),
           ),
-          title: const Text(
-            'Other Books',
-            style: TextStyle(
-              fontSize: 20,
-              letterSpacing: 1,
-              fontWeight: FontWeight.bold,
-            ),
-          )),
+          title: const Text('Books & Solutions')),
       // bottomNavigationBar: isBannerLoaded
       //     ? SizedBox(height: 50, child: AdWidget(ad: bannerAd))
       //     : const SizedBox(),

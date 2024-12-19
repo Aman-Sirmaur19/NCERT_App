@@ -5,13 +5,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../widgets/glass_container.dart';
 
-class HomeOtherBooksGrid extends StatelessWidget {
-  const HomeOtherBooksGrid({super.key});
+class HomeCbseGrid extends StatelessWidget {
+  const HomeCbseGrid({super.key});
 
   Future<List<Map<String, dynamic>>> fetchCategories() async {
     try {
       QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('Other Books').get();
+          await FirebaseFirestore.instance.collection('CBSE').get();
       return querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
